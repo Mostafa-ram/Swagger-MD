@@ -1,3 +1,5 @@
+import os
+from dotenv import load_dotenv
 from flask import Flask, jsonify
 from flask_smorest import Api
 from flask_migrate import Migrate
@@ -9,6 +11,7 @@ from routes.results import blp as ResultsBlueprint
 
 def create_app():
     app = Flask(__name__)
+    load_dotenv()
     app.config["PROPAGATE_EXCEPTIONS"] = True
     app.config["API_TITLE"] = "MD API"
     app.config["API_VERSION"] = "v1.0"
@@ -16,7 +19,7 @@ def create_app():
     app.config["OPENAPI_URL_PREFIX"] = "/mdOnePlace/api/"
     app.config["OPENAPI_SWAGGER_UI_PATH"] = "/swagger-ui"
     app.config["OPENAPI_SWAGGER_UI_URL"] = "https://cdn.jsdelivr.net/npm/swagger-ui-dist/"
-    app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql://postgres:123@localhost/testtt"
+    app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_url", "postgresql://postgres:123@localhost/testtt")
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     app.config["PROPAGATE_EXCEPTIONS"] = True
     db.init_app(app)
